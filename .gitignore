@@ -1,0 +1,14 @@
+# Gated benchmark data — never commit the GPQA questions themselves.
+.cache/
+datasets/
+
+# Pinned Harbor checkout, recreated by scripts/setup.sh.
+harbor/
+
+# Credentials.
+.env
+
+# Python / tooling.
+__pycache__/
+*.pyc
+.venv/

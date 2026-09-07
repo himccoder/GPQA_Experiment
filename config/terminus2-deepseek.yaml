@@ -1,0 +1,57 @@
+# Frozen experimental configuration for the GPQA-Diamond replication.
+#
+# This is a standard Harbor job config (harbor.models.job.config.JobConfig).
+# Every value that is NOT a Harbor/Terminus-2 default is commented with a reason;
+# anything not listed here is left at its upstream default on purpose.
+#
+# Run with:  scripts/run_trial.sh <trial-name>
+
+# Job results + native trajectories land in ./trajectories/<job-name>/ so the
+# deliverable trajectories are Harbor's native output, not a re-serialisation.
+jobs_dir: trajectories
+
+n_attempts: 1            # one attempt per question; the 3 trials are 3 separate jobs
+timeout_multiplier: 1.0  # keep the task's own 3600s agent/verifier timeouts
+
+# GPQA tasks are I/O-bound on the DeepSeek API, so several can run at once.
+# Lower this if you hit DeepSeek rate limits; it does not affect accuracy.
+n_concurrent_trials: 4
+quiet: false
+
+environment:
+  type: docker
+  force_build: false  # the task image is identical for all 198 tasks; build once
+  delete: true        # do not leave 594 stopped containers behind
+
+# Retry genuine infrastructure failures only. RetryConfig's default
+# exclude_exceptions already refuses to retry AgentTimeoutError,
+# RewardFileNotFoundError, VerifierOutputParseError and friends, so a trial
+# where the model simply answered badly is never re-rolled.
+retry:
+  max_retries: 2
+
+agents:
+  - name: terminus-2
+    # LiteLLM route: deepseek/<model>. Harbor's provider table maps the
+    # `deepseek` prefix to https://api.deepseek.com with DEEPSEEK_API_KEY.
+    # `deepseek-v4-flash` is the API alias that DeepSeek updated to the
+    # DeepSeek-V4-Flash-0731 checkpoint (see docs/experiment-notes.md).
+    model_name: deepseek/deepseek-v4-flash
+    env:
+      DEEPSEEK_API_KEY: "${DEEPSEEK_API_KEY}"
+    kwargs:
+      # Thinking mode at maximum effort — this is the setting the model card
+      # and DeepSeek's own docs use for reasoning benchmarks.
+      reasoning_effort: high
+      # Bound the cost of a runaway agent. Answering a GPQA question needs a
+      # handful of turns (reason, optionally compute, write /app/answer.txt),
+      # so 30 is far above what a healthy trial uses. Harbor's default is
+      # effectively unlimited.
+      max_turns: 30
+      # temperature is deliberately NOT set: Terminus-2 then sends no
+      # temperature field and DeepSeek's own default for thinking mode applies.
+      # See docs/experiment-notes.md for why.
+
+datasets:
+  # Generated locally by scripts/build_tasks.py. Never committed (gated data).
+  - path: datasets/gpqa-diamond
