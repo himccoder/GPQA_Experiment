@@ -13,9 +13,7 @@ run with **Harbor** + **Terminus-2**, over all **198** questions, **3 times**.
 | **Mean** |       — |     — | **90.74%** |
 
 ```
-Target:          ≥85%    ✅ met
-Reference:       ~91%
-This experiment: 90.74%
+This experiment: 90.74% (Compared to AA's 91 %)
 ```
 
 594 of 594 tasks completed. **Zero infrastructure errors**, zero failed API calls.
