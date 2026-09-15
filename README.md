@@ -16,7 +16,7 @@ run with **Harbor** + **Terminus-2**, over all **198** questions, **3 times**.
 This experiment: 90.74% (Compared to AA's 91 %)
 ```
 
-594 of 594 tasks completed. **Zero infrastructure errors**, zero failed API calls.
+594 of 594 tasks completed.
 Total cost $23.84, total runtime ~8 hours.
 
 ## What was done
@@ -29,8 +29,7 @@ Total cost $23.84, total runtime ~8 hours.
 3. **Harness check.** An oracle run, which writes the known-correct letter and calls
    no model, scored **198/198** — proving the dataset, task generation, answer
    extraction and grading are sound before any money was spent.
-4. **Smoke tests** at 1, 5, 10 and 20 questions, all clean.
-5. **Three trials**, each all 198 questions, run as three separate Harbor jobs with a
+4. **Three trials**, each all 198 questions, run as three separate Harbor jobs with a
    frozen configuration.
 
 ## How it works
@@ -132,14 +131,14 @@ any fresh run and none of it is part of the deliverable.
 Each trial's fully resolved configuration is recorded in its own `config.json`, so the
 table above can always be checked against what actually executed.
 
-## How this differs from Artificial Analysis
+## Similiar to Artificial Analysis (But couple differences)
 
 Two differences matter when comparing 90.74% to the ~91% reference.
 
 **1. Agentic, not direct prompting.** Artificial Analysis runs GPQA Diamond by asking
 the model the multiple-choice question and pulling the letter out with a regex
 (pass@1). Here the model gets a container and a terminal, and must write its answer to
-a file. That is a harder setting, so the two numbers measure different things.
+a file. That is a slightly harder setting.
 
 **2. The agent containers had internet access.** Harbor's default network mode is
 public, and some agents used it. Measured across all 594 tasks:
@@ -151,7 +150,7 @@ public, and some agents used it. Measured across all 594 tasks:
 
 Searching correlated with *failure*, not success — agents reached for the web when
 already stuck, and it did not rescue them. **Scoring every searched task as wrong
-gives a floor of 88.72%**, still above the 85% target. The headline number is not
+gives a floor of 88.72%* (still above the 85% target). The headline number is not
 propped up by internet access.
 
 Two smaller notes. GPQA Diamond is now a legacy evaluation at Artificial Analysis, and
