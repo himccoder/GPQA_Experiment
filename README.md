@@ -1,47 +1,61 @@
-# DeepSeek-V4-Flash-0731 on GPQA Diamond — Harbor + Terminus-2 replication
+# DeepSeek-V4-Flash-0731 on GPQA Diamond
 
-An attempt to reproduce Artificial Analysis's **~91%** GPQA Diamond result for
-**DeepSeek-V4-Flash-0731**, run as an *agentic* evaluation: the model is driven
-by **Terminus-2** inside a sandboxed Docker container by the **Harbor**
-evaluation framework, over all **198** GPQA Diamond questions, **3 times**. The
-reported number is the mean of the three trial accuracies. Target: **≥85%**.
+An agentic replication of the GPQA Diamond benchmark for **DeepSeek-V4-Flash-0731**,
+run with **Harbor** + **Terminus-2**, over all **198** questions, **3 times**.
 
-This is a replication *under a specific harness*, not a re-measurement of AA's
-setup. See [docs/experiment-notes.md](docs/experiment-notes.md) for why the two
-numbers are not directly comparable.
+## Result
 
-## Architecture
+| Trial    | Correct | Total | Accuracy |
+| -------- | ------: | ----: | -------: |
+| 1        |     180 |   198 |   90.91% |
+| 2        |     180 |   198 |   90.91% |
+| 3        |     179 |   198 |   90.40% |
+| **Mean** |       — |     — | **90.74%** |
 
 ```
-GPQA Diamond CSV (198 gated questions, Hugging Face)
-   │  scripts/build_tasks.py  → validate, then hand rows to Harbor's adapter
-   ▼
-Harbor task dirs (instruction.md + Dockerfile + tests/test.sh + solution/)
-   │  harbor jobs start
-   ▼
-Terminus-2 ── tmux ──► Ubuntu container, writes its answer to /app/answer.txt
-   │  LiteLLM  deepseek/deepseek-v4-flash
-   ▼
-DeepSeek API (https://api.deepseek.com) → DeepSeek-V4-Flash-0731
-   │
-   ▼
-Harbor verifier (tests/test.sh) → reward 1 / 0 → result.json + trajectory.json
+Target:          ≥85%    ✅ met
+Reference:       ~91%
+This experiment: 90.74%
 ```
 
-Harbor's `gpqa-diamond` adapter, its verifier and Terminus-2 are used
-**unmodified**. This repo contributes the frozen configuration, the CSV
-loader/validator, the trial scripts and the aggregation.
+594 of 594 tasks completed. **Zero infrastructure errors**, zero failed API calls.
+Total cost $23.84, total runtime ~8 hours.
 
-## Requirements
+## What was done
 
-- Python 3.9+ (for the two scripts here; Harbor itself needs 3.12, installed by `uv`)
-- [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
-- Docker, running
-- `git`
-- A Hugging Face account with access to the gated `Idavidrein/gpqa` dataset
-- A DeepSeek API key
+1. **Dataset.** The canonical gated `Idavidrein/gpqa` Diamond CSV, downloaded with a
+   Hugging Face token and validated: exactly 198 questions, four choices each, no
+   duplicates, correct answer distinct from its distractors in every row.
+2. **Tasks.** Harbor's own `gpqa-diamond` adapter turns those rows into 198 tasks —
+   its prompt, its deterministic A/B/C/D shuffle (seed 42), its verifier, unmodified.
+3. **Harness check.** An oracle run, which writes the known-correct letter and calls
+   no model, scored **198/198** — proving the dataset, task generation, answer
+   extraction and grading are sound before any money was spent.
+4. **Smoke tests** at 1, 5, 10 and 20 questions, all clean.
+5. **Three trials**, each all 198 questions, run as three separate Harbor jobs with a
+   frozen configuration.
 
-## Setup
+## How it works
+
+```
+GPQA Diamond CSV  (198 gated questions)
+   │  scripts/build_tasks.py — validate, then hand rows to Harbor's adapter
+   ▼
+198 Harbor tasks  (instruction.md + Dockerfile + tests/test.sh)
+   ▼
+Terminus-2 ── tmux ──► Ubuntu container; agent writes its answer to /app/answer.txt
+   │  LiteLLM → https://api.deepseek.com
+   ▼
+DeepSeek-V4-Flash-0731
+   ▼
+Harbor verifier → reward 1 / 0 → result.json + trajectory.json
+```
+
+The agent is **not** asked a multiple-choice question and parsed. It is dropped into a
+Linux container and must reason, optionally compute, and write a single letter to a
+file. That is a harder setting than direct prompting.
+
+## Reproducing it
 
 ```bash
 # 1. Install the pinned Harbor checkout (clones ./harbor, runs uv sync)
@@ -51,166 +65,111 @@ loader/validator, the trial scripts and the aggregation.
 cp .env.example .env      # fill in DEEPSEEK_API_KEY and HF_TOKEN
 set -a && source .env && set +a
 
-# 3. Build the 198 tasks (downloads + validates the gated CSV)
+# 3. Build the 198 tasks
 python3 scripts/build_tasks.py
+
+# 4. Run all three trials (~8 h, ~$24), then aggregate
+caffeinate -dimsu ./scripts/run_all_trials.sh
 ```
 
-`build_tasks.py` fails loudly unless it finds exactly 198 questions, all
-required columns, four distinct non-empty choices per question, and no
-duplicates. It prints the ground-truth letter distribution as a shuffle check.
+Single trial: `./scripts/run_trial.sh trial-1`.
+Re-aggregate at any time: `python3 scripts/calculate_results.py`.
 
-### Authentication
+Requires Docker, [`uv`](https://docs.astral.sh/uv/), a DeepSeek API key with credit
+(DeepSeek is prepaid — an empty balance fails every request), and Hugging Face access
+to the gated `Idavidrein/gpqa` dataset.
 
-Two separate credentials, both read from the environment, never from a file in
-this repo:
-
-- `HF_TOKEN` — used once by `scripts/build_tasks.py` to fetch the gated CSV.
-  Accept the terms at <https://huggingface.co/datasets/Idavidrein/gpqa> first.
-- `DEEPSEEK_API_KEY` — passed to the Terminus-2 agent via the `${DEEPSEEK_API_KEY}`
-  template in `config/terminus2-deepseek.yaml`. Harbor resolves it from the host
-  environment at launch and templatises it back out when it writes `config.json`,
-  so the key never lands in the committed job output.
-
-## Verify the harness before spending credits
-
-```bash
-# Oracle run: the reference solution writes the correct letter. This calls no
-# model — it proves the dataset, task generation and verifier are sound.
-# Expect 198/198.
-uv run --project harbor harbor jobs start \
-  -p datasets/gpqa-diamond -a oracle -o trajectories --job-name oracle-check --yes
-python3 scripts/calculate_results.py oracle-check
-```
-
-Then scale up on the real model, checking the trajectory after each step:
-
-```bash
-./scripts/run_trial.sh smoke-1   -l 1     # one question, end to end
-./scripts/run_trial.sh smoke-5   -l 5
-./scripts/run_trial.sh smoke-10  -l 10
-./scripts/run_trial.sh smoke-20  -l 20
-```
-
-Inspect a trajectory with `cat trajectories/smoke-1/*/agent/trajectory.json`, or
-replay the terminal with `asciinema play trajectories/smoke-1/*/agent/recording.cast`.
-
-## Pre-flight checklist
-
-Everything below should be green before trial 1 starts. After that the
-configuration is frozen: changing a model parameter mid-experiment makes it a
-different experiment, and it must be documented and re-run from trial 1.
-
-- [ ] `docker info` succeeds
-- [ ] `./scripts/setup.sh` completed; `harbor --version` prints
-- [ ] `HF_TOKEN` and `DEEPSEEK_API_KEY` exported
-- [ ] `scripts/build_tasks.py` reported 198 validated questions
-- [ ] `datasets/gpqa-diamond/` contains 198 task directories
-- [ ] oracle run scores 198/198
-- [ ] 1-question run: answer written, verifier scored it, `agent/trajectory.json` exists
-- [ ] 5-, 10-, 20-question runs clean, no infrastructure errors
-- [ ] cost of the 20-question run extrapolated to 594 trials and accepted
-- [ ] `git status` clean; no dataset, key or `.env` staged
-
-## Running the experiment
-
-```bash
-./scripts/run_trial.sh trial-1        # one trial: 198 questions
-./scripts/run_all_trials.sh           # all three, then aggregate
-```
-
-If a trial dies partway through, resume it rather than restarting — Harbor keeps
-the completed trials:
-
-```bash
-uv run --project harbor harbor jobs resume trajectories/trial-2
-```
-
-Aggregate at any time:
-
-```bash
-python3 scripts/calculate_results.py
-```
-
-## Results
-
-> Not yet run — the experiment is pending a DeepSeek API key. Fill this table
-> from `results/summary.json` after `./scripts/run_all_trials.sh`.
-
-| Trial    | Correct | Total | Accuracy | Errors |
-| -------- | ------: | ----: | -------: | -----: |
-| 1        |       — |   198 |        — |      — |
-| 2        |       — |   198 |        — |      — |
-| 3        |       — |   198 |        — |      — |
-| **Mean** |       — |     — |    **—** |      — |
+## Layout
 
 ```
-Artificial Analysis: ~91%
-Target:              ≥85%
-This experiment:     —
-```
-
-## Repository layout
-
-```
-config/terminus2-deepseek.yaml   Frozen Harbor job config (the experiment definition)
-scripts/setup.sh                 Clone + pin Harbor, install deps
+config/terminus2-deepseek.yaml   The experiment definition (frozen Harbor job config)
+scripts/setup.sh                 Clone + pin Harbor, install dependencies
 scripts/build_tasks.py           Fetch/validate the GPQA CSV → 198 Harbor tasks
-scripts/run_trial.sh             Run one job (a trial, or a smoke test with -l N)
-scripts/run_all_trials.sh        The three trials, then aggregation
-scripts/calculate_results.py     Harbor results → results/*.json + the table above
-trajectories/trial-N/            Harbor's native job output (the deliverable)
-results/                         Per-trial and summary JSON
-docs/experiment-notes.md         Every non-default choice, with its reason
+scripts/run_trial.sh             Run one trial
+scripts/run_all_trials.sh        Run all three, then aggregate
+scripts/calculate_results.py     Harbor output → results/*.json + the table above
+results/trial-{1,2,3}.json       Per-question rewards, tokens, cost
+results/summary.json             The headline numbers
+trajectories/trial-{1,2,3}/      3 × 198 agent trajectories
+docs/experiment-notes.md         Every configuration choice, with its reason
 ```
 
-Each trial directory holds one subdirectory per question, named
-`<task-id>__<short-uuid>`:
+Each question folder holds two files:
 
 ```
-trajectories/trial-1/<task>__<uuid>/
-├── config.json          # resolved trial config (secrets templatised)
-├── result.json          # verdict: verifier_result.rewards.reward = 1 | 0
-├── agent/
-│   ├── trajectory.json  # the full Terminus-2 trajectory
-│   └── recording.cast   # asciinema recording of the terminal session
-└── verifier/
-    ├── reward.txt
-    └── test-stdout.txt  # shows expected vs. submitted letter
+trajectories/trial-1/<task-id>__<uuid>/
+├── agent/trajectory.json   the full Terminus-2 trajectory: reasoning, commands, tokens
+└── result.json             the verdict — verifier_result.rewards.reward = 1 | 0
 ```
 
-## Reproducibility
+That is 3 × 198 trajectories plus their results. Each trial directory also keeps one
+`config.json` (the resolved configuration that actually ran, with secrets templatised)
+and one job-level `result.json`.
+
+Everything else Harbor writes was removed after the run — internal bookkeeping
+(`lock.json`, `job.log`, `trial.log`), tmux pane dumps, asciinema recordings, the
+per-question copies of the config, and the verifier's `reward.txt` / `test-stdout.txt`
+(the reward it reports is already in each `result.json`). All of it is regenerated by
+any fresh run and none of it is part of the deliverable.
+
+## Configuration
 
 | | |
 | --- | --- |
 | Model | DeepSeek-V4-Flash-0731, called as `deepseek/deepseek-v4-flash` |
-| Endpoint | `https://api.deepseek.com` (LiteLLM `deepseek` provider) |
-| Benchmark | GPQA Diamond, 198 questions, `Idavidrein/gpqa` → `gpqa_diamond.csv` |
-| Agent | Harbor Terminus-2 |
+| Endpoint | `https://api.deepseek.com` |
+| `system_fingerprint` | `aeb56401ca74e127821c4f9126dcb669` (identical across all trials) |
+| Agent | Terminus-2 (Harbor 0.22.0) |
 | Framework | Harbor, pinned at `71c39eafbd134d43ae3f489b5e6488b2a157de65` |
 | Adapter | Harbor `adapters/gpqa-diamond`, unmodified |
-| Choice-shuffle seed | 42 (adapter default) |
+| Reasoning effort | `high` |
 | Temperature | unset — DeepSeek's thinking-mode default |
-| Reasoning | `reasoning_effort: high` |
 | Max turns | 30 |
-| Attempts / trial | 1 |
-| Trials | 3 |
+| Attempts per trial | 1 (the three trials are three separate jobs) |
+| Choice-shuffle seed | 42 (adapter default) |
+| Concurrency | 4 |
 | Sampling seed | none — the DeepSeek API exposes no seed parameter |
-| Date | to be recorded at run time |
+| Dates | Trials 1–2: 2026-09-14 (00:33–05:05 CDT). Trial 3: 2026-09-14 (17:37–19:57 CDT) |
 
-Harbor writes the fully resolved configuration to
-`trajectories/<trial>/config.json` on every run, so the table above can always
-be checked against what actually executed.
+Each trial's fully resolved configuration is recorded in its own `config.json`, so the
+table above can always be checked against what actually executed.
+
+## How this differs from Artificial Analysis
+
+Two differences matter when comparing 90.74% to the ~91% reference.
+
+**1. Agentic, not direct prompting.** Artificial Analysis runs GPQA Diamond by asking
+the model the multiple-choice question and pulling the letter out with a regex
+(pass@1). Here the model gets a container and a terminal, and must write its answer to
+a file. That is a harder setting, so the two numbers measure different things.
+
+**2. The agent containers had internet access.** Harbor's default network mode is
+public, and some agents used it. Measured across all 594 tasks:
+
+| | Correct | Accuracy |
+| --- | ---: | ---: |
+| Used a search engine (32 tasks, 5.4%) | 12/32 | **37.5%** |
+| Did not search (562 tasks) | 527/562 | **93.8%** |
+
+Searching correlated with *failure*, not success — agents reached for the web when
+already stuck, and it did not rescue them. **Scoring every searched task as wrong
+gives a floor of 88.72%**, still above the 85% target. The headline number is not
+propped up by internet access.
+
+Two smaller notes. GPQA Diamond is now a legacy evaluation at Artificial Analysis, and
+no score for this model was found on their live model page, so the ~91% could not be
+verified directly. And LiteLLM warns that prior `reasoning_content` is not replayed to
+DeepSeek's thinking mode on multi-turn calls — the reasoning is saved in full in the
+trajectories, so this affects the agent's fidelity, not the data.
 
 ## Data handling
 
-`datasets/` and `.cache/` are gitignored: GPQA is gated and its questions must
-not be redistributed. **Trajectories necessarily contain the question text**, so
-if you publish this repository, keep it private or strip `trajectories/` first.
-Generated tasks carry the GPQA canary string so leaked copies stay detectable.
+`datasets/`, `.cache/` and `.env` are gitignored — GPQA is gated and its questions must
+not be redistributed. **The trajectories necessarily contain the question text**, so
+this repository should stay private. Generated tasks carry the GPQA canary string, so
+leaked copies remain detectable.
 
-## Licence and citation
-
-GPQA is CC-BY-4.0. Cite the benchmark:
+GPQA is CC-BY-4.0:
 
 ```bibtex
 @inproceedings{rein2024gpqa,

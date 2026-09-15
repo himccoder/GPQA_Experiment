@@ -15,6 +15,11 @@ timeout_multiplier: 1.0  # keep the task's own 3600s agent/verifier timeouts
 
 # GPQA tasks are I/O-bound on the DeepSeek API, so several can run at once.
 # Lower this if you hit DeepSeek rate limits; it does not affect accuracy.
+# Kept at 4. Raising it to 8 to cut wall-clock killed Docker Desktop's backend
+# (SIGKILL) within a minute of starting trial 1, while 4 ran the 198-task oracle
+# job and every smoke test without incident. Throughput-only either way, so this
+# costs time, not accuracy. Do not raise it without also raising Docker
+# Desktop's CPU/memory allocation in its settings.
 n_concurrent_trials: 4
 quiet: false
 

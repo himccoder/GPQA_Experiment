@@ -80,17 +80,34 @@ def load_and_validate(csv_path: Path) -> list[dict]:
     if duplicates:
         problems.append(f"{duplicates} duplicate question(s)")
 
+    # Rows 89 and 126 of the canonical Diamond CSV repeat one distractor
+    # verbatim. That is upstream data, not corruption, and it is left alone:
+    # rewriting choices would modify the benchmark. What must hold is that the
+    # *correct* answer is distinct from every distractor, so the shuffled
+    # letter is unambiguous — that stays fatal.
+    repeated_distractor_rows = []
     for index, row in enumerate(rows):
         choices = [row[c].strip() for c in REQUIRED_COLUMNS[1:]]
+        correct, distractors = choices[0], choices[1:]
         if not all(choices):
             problems.append(f"row {index}: blank answer choice")
-        elif len(set(choices)) != 4:
-            problems.append(f"row {index}: answer choices are not 4 distinct strings")
+            continue
+        if correct in distractors:
+            problems.append(
+                f"row {index}: correct answer also appears as a distractor, "
+                "so the ground-truth letter is ambiguous"
+            )
+        elif len(set(distractors)) != 3:
+            repeated_distractor_rows.append(index)
 
     if problems:
         sys.exit("Dataset validation failed:\n  - " + "\n  - ".join(problems))
 
-    print(f"Validated {len(rows)} questions, 4 distinct choices each, no duplicates.")
+    print(f"Validated {len(rows)} questions, no duplicates, "
+          "correct answer distinct from its distractors in every row.")
+    if repeated_distractor_rows:
+        print(f"Note: rows {repeated_distractor_rows} repeat a distractor "
+              "verbatim (upstream GPQA data; kept unmodified).")
     return rows
 
 

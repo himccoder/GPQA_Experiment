@@ -1,0 +1,25 @@
+{
+    "job_name": "trial-3",
+    "jobs_dir": "trajectories",
+    "retry": {
+        "max_retries": 2
+    },
+    "agents": [
+        {
+            "name": "terminus-2",
+            "model_name": "deepseek/deepseek-v4-flash",
+            "kwargs": {
+                "reasoning_effort": "high",
+                "max_turns": 30
+            },
+            "env": {
+                "DEEPSEEK_API_KEY": "${DEEPSEEK_API_KEY}"
+            }
+        }
+    ],
+    "datasets": [
+        {
+            "path": "datasets/gpqa-diamond"
+        }
+    ]
+}

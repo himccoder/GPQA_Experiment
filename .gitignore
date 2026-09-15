@@ -12,3 +12,6 @@ harbor/
 __pycache__/
 *.pyc
 .venv/
+
+# Unattended run logs.
+logs/

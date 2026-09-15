@@ -1,0 +1,42 @@
+{
+  "benchmark": "GPQA-Diamond",
+  "num_questions": 198,
+  "num_trials": 3,
+  "model": "DeepSeek-V4-Flash-0731 (deepseek/deepseek-v4-flash)",
+  "agent": "Terminus-2",
+  "framework": "Harbor",
+  "trials": [
+    {
+      "trial": "trial-1",
+      "correct": 180,
+      "total": 198,
+      "n_errors": 0,
+      "accuracy": 0.9091,
+      "n_input_tokens": 9805374,
+      "n_output_tokens": 6518167,
+      "cost_usd": 8.1521
+    },
+    {
+      "trial": "trial-2",
+      "correct": 180,
+      "total": 198,
+      "n_errors": 0,
+      "accuracy": 0.9091,
+      "n_input_tokens": 11404821,
+      "n_output_tokens": 6717713,
+      "cost_usd": 8.4076
+    },
+    {
+      "trial": "trial-3",
+      "correct": 179,
+      "total": 198,
+      "n_errors": 0,
+      "accuracy": 0.904,
+      "n_input_tokens": 7216747,
+      "n_output_tokens": 5873368,
+      "cost_usd": 7.2848
+    }
+  ],
+  "mean_accuracy": 0.9074,
+  "total_cost_usd": 23.8445
+}

@@ -1,0 +1,806 @@
+{
+  "trial": "trial-2",
+  "correct": 180,
+  "total": 198,
+  "n_completed": 198,
+  "n_errors": 0,
+  "accuracy": 0.9091,
+  "n_input_tokens": 11404821,
+  "n_output_tokens": 6717713,
+  "cost_usd": 8.4076,
+  "errors": [],
+  "questions": [
+    {
+      "task_name": "0",
+      "reward": 1.0
+    },
+    {
+      "task_name": "1",
+      "reward": 1.0
+    },
+    {
+      "task_name": "2",
+      "reward": 1.0
+    },
+    {
+      "task_name": "3",
+      "reward": 1.0
+    },
+    {
+      "task_name": "4",
+      "reward": 1.0
+    },
+    {
+      "task_name": "5",
+      "reward": 1.0
+    },
+    {
+      "task_name": "6",
+      "reward": 1.0
+    },
+    {
+      "task_name": "7",
+      "reward": 1.0
+    },
+    {
+      "task_name": "8",
+      "reward": 0.0
+    },
+    {
+      "task_name": "9",
+      "reward": 1.0
+    },
+    {
+      "task_name": "10",
+      "reward": 1.0
+    },
+    {
+      "task_name": "11",
+      "reward": 1.0
+    },
+    {
+      "task_name": "12",
+      "reward": 1.0
+    },
+    {
+      "task_name": "13",
+      "reward": 0.0
+    },
+    {
+      "task_name": "14",
+      "reward": 1.0
+    },
+    {
+      "task_name": "15",
+      "reward": 0.0
+    },
+    {
+      "task_name": "16",
+      "reward": 1.0
+    },
+    {
+      "task_name": "17",
+      "reward": 0.0
+    },
+    {
+      "task_name": "18",
+      "reward": 1.0
+    },
+    {
+      "task_name": "19",
+      "reward": 1.0
+    },
+    {
+      "task_name": "20",
+      "reward": 1.0
+    },
+    {
+      "task_name": "21",
+      "reward": 1.0
+    },
+    {
+      "task_name": "22",
+      "reward": 1.0
+    },
+    {
+      "task_name": "23",
+      "reward": 1.0
+    },
+    {
+      "task_name": "24",
+      "reward": 1.0
+    },
+    {
+      "task_name": "25",
+      "reward": 1.0
+    },
+    {
+      "task_name": "26",
+      "reward": 1.0
+    },
+    {
+      "task_name": "27",
+      "reward": 1.0
+    },
+    {
+      "task_name": "28",
+      "reward": 1.0
+    },
+    {
+      "task_name": "29",
+      "reward": 0.0
+    },
+    {
+      "task_name": "30",
+      "reward": 0.0
+    },
+    {
+      "task_name": "31",
+      "reward": 1.0
+    },
+    {
+      "task_name": "32",
+      "reward": 1.0
+    },
+    {
+      "task_name": "33",
+      "reward": 1.0
+    },
+    {
+      "task_name": "34",
+      "reward": 1.0
+    },
+    {
+      "task_name": "35",
+      "reward": 1.0
+    },
+    {
+      "task_name": "36",
+      "reward": 1.0
+    },
+    {
+      "task_name": "37",
+      "reward": 1.0
+    },
+    {
+      "task_name": "38",
+      "reward": 1.0
+    },
+    {
+      "task_name": "39",
+      "reward": 1.0
+    },
+    {
+      "task_name": "40",
+      "reward": 1.0
+    },
+    {
+      "task_name": "41",
+      "reward": 1.0
+    },
+    {
+      "task_name": "42",
+      "reward": 1.0
+    },
+    {
+      "task_name": "43",
+      "reward": 1.0
+    },
+    {
+      "task_name": "44",
+      "reward": 1.0
+    },
+    {
+      "task_name": "45",
+      "reward": 1.0
+    },
+    {
+      "task_name": "46",
+      "reward": 1.0
+    },
+    {
+      "task_name": "47",
+      "reward": 1.0
+    },
+    {
+      "task_name": "48",
+      "reward": 1.0
+    },
+    {
+      "task_name": "49",
+      "reward": 1.0
+    },
+    {
+      "task_name": "50",
+      "reward": 1.0
+    },
+    {
+      "task_name": "51",
+      "reward": 1.0
+    },
+    {
+      "task_name": "52",
+      "reward": 1.0
+    },
+    {
+      "task_name": "53",
+      "reward": 1.0
+    },
+    {
+      "task_name": "54",
+      "reward": 1.0
+    },
+    {
+      "task_name": "55",
+      "reward": 1.0
+    },
+    {
+      "task_name": "56",
+      "reward": 1.0
+    },
+    {
+      "task_name": "57",
+      "reward": 1.0
+    },
+    {
+      "task_name": "58",
+      "reward": 1.0
+    },
+    {
+      "task_name": "59",
+      "reward": 1.0
+    },
+    {
+      "task_name": "60",
+      "reward": 1.0
+    },
+    {
+      "task_name": "61",
+      "reward": 1.0
+    },
+    {
+      "task_name": "62",
+      "reward": 1.0
+    },
+    {
+      "task_name": "63",
+      "reward": 1.0
+    },
+    {
+      "task_name": "64",
+      "reward": 1.0
+    },
+    {
+      "task_name": "65",
+      "reward": 1.0
+    },
+    {
+      "task_name": "66",
+      "reward": 1.0
+    },
+    {
+      "task_name": "67",
+      "reward": 1.0
+    },
+    {
+      "task_name": "68",
+      "reward": 1.0
+    },
+    {
+      "task_name": "69",
+      "reward": 0.0
+    },
+    {
+      "task_name": "70",
+      "reward": 1.0
+    },
+    {
+      "task_name": "71",
+      "reward": 1.0
+    },
+    {
+      "task_name": "72",
+      "reward": 1.0
+    },
+    {
+      "task_name": "73",
+      "reward": 1.0
+    },
+    {
+      "task_name": "74",
+      "reward": 1.0
+    },
+    {
+      "task_name": "75",
+      "reward": 1.0
+    },
+    {
+      "task_name": "76",
+      "reward": 0.0
+    },
+    {
+      "task_name": "77",
+      "reward": 1.0
+    },
+    {
+      "task_name": "78",
+      "reward": 1.0
+    },
+    {
+      "task_name": "79",
+      "reward": 1.0
+    },
+    {
+      "task_name": "80",
+      "reward": 1.0
+    },
+    {
+      "task_name": "81",
+      "reward": 0.0
+    },
+    {
+      "task_name": "82",
+      "reward": 1.0
+    },
+    {
+      "task_name": "83",
+      "reward": 1.0
+    },
+    {
+      "task_name": "84",
+      "reward": 1.0
+    },
+    {
+      "task_name": "85",
+      "reward": 1.0
+    },
+    {
+      "task_name": "86",
+      "reward": 1.0
+    },
+    {
+      "task_name": "87",
+      "reward": 1.0
+    },
+    {
+      "task_name": "88",
+      "reward": 0.0
+    },
+    {
+      "task_name": "89",
+      "reward": 0.0
+    },
+    {
+      "task_name": "90",
+      "reward": 1.0
+    },
+    {
+      "task_name": "91",
+      "reward": 1.0
+    },
+    {
+      "task_name": "92",
+      "reward": 1.0
+    },
+    {
+      "task_name": "93",
+      "reward": 1.0
+    },
+    {
+      "task_name": "94",
+      "reward": 1.0
+    },
+    {
+      "task_name": "95",
+      "reward": 1.0
+    },
+    {
+      "task_name": "96",
+      "reward": 1.0
+    },
+    {
+      "task_name": "97",
+      "reward": 1.0
+    },
+    {
+      "task_name": "98",
+      "reward": 1.0
+    },
+    {
+      "task_name": "99",
+      "reward": 1.0
+    },
+    {
+      "task_name": "100",
+      "reward": 1.0
+    },
+    {
+      "task_name": "101",
+      "reward": 1.0
+    },
+    {
+      "task_name": "102",
+      "reward": 0.0
+    },
+    {
+      "task_name": "103",
+      "reward": 1.0
+    },
+    {
+      "task_name": "104",
+      "reward": 1.0
+    },
+    {
+      "task_name": "105",
+      "reward": 1.0
+    },
+    {
+      "task_name": "106",
+      "reward": 0.0
+    },
+    {
+      "task_name": "107",
+      "reward": 1.0
+    },
+    {
+      "task_name": "108",
+      "reward": 1.0
+    },
+    {
+      "task_name": "109",
+      "reward": 1.0
+    },
+    {
+      "task_name": "110",
+      "reward": 1.0
+    },
+    {
+      "task_name": "111",
+      "reward": 1.0
+    },
+    {
+      "task_name": "112",
+      "reward": 1.0
+    },
+    {
+      "task_name": "113",
+      "reward": 1.0
+    },
+    {
+      "task_name": "114",
+      "reward": 1.0
+    },
+    {
+      "task_name": "115",
+      "reward": 1.0
+    },
+    {
+      "task_name": "116",
+      "reward": 1.0
+    },
+    {
+      "task_name": "117",
+      "reward": 1.0
+    },
+    {
+      "task_name": "118",
+      "reward": 1.0
+    },
+    {
+      "task_name": "119",
+      "reward": 1.0
+    },
+    {
+      "task_name": "120",
+      "reward": 1.0
+    },
+    {
+      "task_name": "121",
+      "reward": 1.0
+    },
+    {
+      "task_name": "122",
+      "reward": 1.0
+    },
+    {
+      "task_name": "123",
+      "reward": 1.0
+    },
+    {
+      "task_name": "124",
+      "reward": 1.0
+    },
+    {
+      "task_name": "125",
+      "reward": 1.0
+    },
+    {
+      "task_name": "126",
+      "reward": 1.0
+    },
+    {
+      "task_name": "127",
+      "reward": 1.0
+    },
+    {
+      "task_name": "128",
+      "reward": 1.0
+    },
+    {
+      "task_name": "129",
+      "reward": 1.0
+    },
+    {
+      "task_name": "130",
+      "reward": 0.0
+    },
+    {
+      "task_name": "131",
+      "reward": 1.0
+    },
+    {
+      "task_name": "132",
+      "reward": 1.0
+    },
+    {
+      "task_name": "133",
+      "reward": 1.0
+    },
+    {
+      "task_name": "134",
+      "reward": 1.0
+    },
+    {
+      "task_name": "135",
+      "reward": 1.0
+    },
+    {
+      "task_name": "136",
+      "reward": 1.0
+    },
+    {
+      "task_name": "137",
+      "reward": 1.0
+    },
+    {
+      "task_name": "138",
+      "reward": 1.0
+    },
+    {
+      "task_name": "139",
+      "reward": 1.0
+    },
+    {
+      "task_name": "140",
+      "reward": 1.0
+    },
+    {
+      "task_name": "141",
+      "reward": 1.0
+    },
+    {
+      "task_name": "142",
+      "reward": 1.0
+    },
+    {
+      "task_name": "143",
+      "reward": 1.0
+    },
+    {
+      "task_name": "144",
+      "reward": 1.0
+    },
+    {
+      "task_name": "145",
+      "reward": 0.0
+    },
+    {
+      "task_name": "146",
+      "reward": 1.0
+    },
+    {
+      "task_name": "147",
+      "reward": 1.0
+    },
+    {
+      "task_name": "148",
+      "reward": 1.0
+    },
+    {
+      "task_name": "149",
+      "reward": 1.0
+    },
+    {
+      "task_name": "150",
+      "reward": 1.0
+    },
+    {
+      "task_name": "151",
+      "reward": 1.0
+    },
+    {
+      "task_name": "152",
+      "reward": 1.0
+    },
+    {
+      "task_name": "153",
+      "reward": 1.0
+    },
+    {
+      "task_name": "154",
+      "reward": 1.0
+    },
+    {
+      "task_name": "155",
+      "reward": 1.0
+    },
+    {
+      "task_name": "156",
+      "reward": 1.0
+    },
+    {
+      "task_name": "157",
+      "reward": 1.0
+    },
+    {
+      "task_name": "158",
+      "reward": 1.0
+    },
+    {
+      "task_name": "159",
+      "reward": 1.0
+    },
+    {
+      "task_name": "160",
+      "reward": 0.0
+    },
+    {
+      "task_name": "161",
+      "reward": 1.0
+    },
+    {
+      "task_name": "162",
+      "reward": 1.0
+    },
+    {
+      "task_name": "163",
+      "reward": 1.0
+    },
+    {
+      "task_name": "164",
+      "reward": 1.0
+    },
+    {
+      "task_name": "165",
+      "reward": 1.0
+    },
+    {
+      "task_name": "166",
+      "reward": 1.0
+    },
+    {
+      "task_name": "167",
+      "reward": 0.0
+    },
+    {
+      "task_name": "168",
+      "reward": 1.0
+    },
+    {
+      "task_name": "169",
+      "reward": 1.0
+    },
+    {
+      "task_name": "170",
+      "reward": 1.0
+    },
+    {
+      "task_name": "171",
+      "reward": 1.0
+    },
+    {
+      "task_name": "172",
+      "reward": 1.0
+    },
+    {
+      "task_name": "173",
+      "reward": 1.0
+    },
+    {
+      "task_name": "174",
+      "reward": 1.0
+    },
+    {
+      "task_name": "175",
+      "reward": 1.0
+    },
+    {
+      "task_name": "176",
+      "reward": 1.0
+    },
+    {
+      "task_name": "177",
+      "reward": 1.0
+    },
+    {
+      "task_name": "178",
+      "reward": 1.0
+    },
+    {
+      "task_name": "179",
+      "reward": 1.0
+    },
+    {
+      "task_name": "180",
+      "reward": 1.0
+    },
+    {
+      "task_name": "181",
+      "reward": 1.0
+    },
+    {
+      "task_name": "182",
+      "reward": 0.0
+    },
+    {
+      "task_name": "183",
+      "reward": 1.0
+    },
+    {
+      "task_name": "184",
+      "reward": 1.0
+    },
+    {
+      "task_name": "185",
+      "reward": 1.0
+    },
+    {
+      "task_name": "186",
+      "reward": 1.0
+    },
+    {
+      "task_name": "187",
+      "reward": 1.0
+    },
+    {
+      "task_name": "188",
+      "reward": 1.0
+    },
+    {
+      "task_name": "189",
+      "reward": 1.0
+    },
+    {
+      "task_name": "190",
+      "reward": 1.0
+    },
+    {
+      "task_name": "191",
+      "reward": 1.0
+    },
+    {
+      "task_name": "192",
+      "reward": 1.0
+    },
+    {
+      "task_name": "193",
+      "reward": 1.0
+    },
+    {
+      "task_name": "194",
+      "reward": 1.0
+    },
+    {
+      "task_name": "195",
+      "reward": 1.0
+    },
+    {
+      "task_name": "196",
+      "reward": 1.0
+    },
+    {
+      "task_name": "197",
+      "reward": 1.0
+    }
+  ]
+}

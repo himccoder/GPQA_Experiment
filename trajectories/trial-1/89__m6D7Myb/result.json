@@ -1,0 +1,130 @@
+{
+    "id": "778b593a-9818-4089-a7ee-6011bf3e181c",
+    "task_name": "89",
+    "trial_name": "89__m6D7Myb",
+    "trial_uri": "file:///Users/himnishchhabra/Documents/FormalTheoryAgents/trajectories/trial-1/89__m6D7Myb",
+    "task_id": {
+        "path": "datasets/gpqa-diamond/89"
+    },
+    "source": "gpqa-diamond",
+    "task_checksum": "47eeaccd191816e67d62f08a9cea9164212653b2775e7b813458d9c9b206c9a5",
+    "config": {
+        "task": {
+            "path": "datasets/gpqa-diamond/89",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "gpqa-diamond"
+        },
+        "trial_name": "89__m6D7Myb",
+        "trials_dir": "trajectories/trial-1",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "terminus-2",
+            "import_path": null,
+            "model_name": "deepseek/deepseek-v4-flash",
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "resume_trajectory": false,
+            "load_trajectory": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {
+                "reasoning_effort": "high",
+                "max_turns": 30
+            },
+            "env": {
+                "DEEPSEEK_API_KEY": "${DEEPSEEK_API_KEY}"
+            },
+            "mcp_servers": []
+        },
+        "user_agent": null,
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "extra_instructions": [],
+        "job_id": "0e9e994d-532a-446e-b7f5-7ce4cd654c3d",
+        "source_trial": null
+    },
+    "agent_info": {
+        "name": "terminus-2",
+        "version": "2.0.0",
+        "model_info": {
+            "name": "deepseek-v4-flash",
+            "provider": "deepseek"
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 2529,
+        "n_cache_tokens": 1536,
+        "n_output_tokens": 25145,
+        "cost_usd": 0.030481116,
+        "rollout_details": [],
+        "metadata": {
+            "n_episodes": 2,
+            "api_request_times_msec": [
+                108636.29698753357,
+                17267.594814300537
+            ],
+            "summarization_count": 0
+        }
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 1.0
+        }
+    },
+    "verifier_environment_mode": "shared",
+    "exception_info": null,
+    "started_at": "2026-09-14T05:04:19.246778Z",
+    "finished_at": "2026-09-14T05:06:31.402062Z",
+    "environment_setup": {
+        "started_at": "2026-09-14T05:04:19.247908Z",
+        "finished_at": "2026-09-14T05:04:21.059504Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-09-14T05:04:21.059576Z",
+        "finished_at": "2026-09-14T05:04:22.599438Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-09-14T05:04:22.599563Z",
+        "finished_at": "2026-09-14T05:06:29.224727Z"
+    },
+    "verifier": {
+        "started_at": "2026-09-14T05:06:29.560997Z",
+        "finished_at": "2026-09-14T05:06:29.748232Z"
+    },
+    "step_results": null
+}
